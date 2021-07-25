@@ -14,6 +14,7 @@ const recipeQuery = `*[_type == "recipe" && slug.current == $slug][0]{
     slug,
     mainImage,
     ingredient[]{
+        _key,
         unit,
         wholeNumber,
         fraction,
@@ -50,10 +51,10 @@ export default function OneRecipe({ data, preview }) {
 
     return (
         <article className="recipe">
-            <h1>{recipe.name}</h1>
+            <h1>{recipe?.name}</h1>
             <button className="like-button" onClick={addLike}>{likes} ❤</button>
             <main className="content">
-                {recipe?.mainImage && <img src={urlFor(recipe.mainImage).url()} alt={recipe.name} />}
+                {recipe?.mainImage && <img src={urlFor(recipe.mainImage).url()} alt={recipe?.name} />}
                 <div className="breakdown">
                     <ul className="ingredients">
                         {recipe.ingredient?.map(ingredient => (
