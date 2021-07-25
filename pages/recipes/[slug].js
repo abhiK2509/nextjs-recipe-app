@@ -1,4 +1,5 @@
 //dynamic route
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import {
@@ -7,7 +8,6 @@ import {
     usePreviewSubscription,
     Portabletext
 } from "../../lib/sanity";
-import { useState } from "react";
 
 const recipeQuery = `*[_type == "recipe" && slug.current == $slug][0]{
     _id,
@@ -28,14 +28,15 @@ const recipeQuery = `*[_type == "recipe" && slug.current == $slug][0]{
 
 export default function OneRecipe({ data, preview }) {
     const router = useRouter();
-    if (!router.isFallback && !data) return <div>Loading...</div>;
-
+    if (!router.isFallback && !data.recipe) {
+        return <div>Loading...</div>;
+    }
     const { data: recipe } = usePreviewSubscription(recipeQuery, {
-        params: { slug: data.recipe?.slug.current },
+        params: { slug: data.recipe.slug.current },
         initialData: data,
         enabled: preview
     });
-    const [likes, setLikes] = useState(data?.recipe?.likes);
+    const [likes, setLikes] = useState(data.recipe.likes);
     const addLike = async () => {
         const res = await fetch("/api/handle-like", {
             method: "POST",
