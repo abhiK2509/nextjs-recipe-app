@@ -1,5 +1,4 @@
 //dynamic route
-import { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import {
@@ -8,6 +7,7 @@ import {
     usePreviewSubscription,
     Portabletext
 } from "../../lib/sanity";
+import { useState } from "react";
 
 const recipeQuery = `*[_type == "recipe" && slug.current == $slug][0]{
     _id,
