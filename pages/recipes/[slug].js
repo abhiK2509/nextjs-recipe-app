@@ -28,15 +28,17 @@ const recipeQuery = `*[_type == "recipe" && slug.current == $slug][0]{
 
 export default function OneRecipe({ data, preview }) {
     const router = useRouter();
-    if (!router.isFallback && !data.recipe) {
-        return <div>Loading...</div>;
-    }
+    const slug = data?.recipe?.slug?.current;
+    const existLikes = data?.recipe?.likes;
     const { data: recipe } = usePreviewSubscription(recipeQuery, {
-        params: { slug: data.recipe.slug.current },
+        params: { slug },
         initialData: data,
         enabled: preview
     });
-    const [likes, setLikes] = useState(data.recipe.likes);
+    const [likes, setLikes] = useState(existLikes);
+    if (!router.isFallback && !slug) {
+        return <div>Loading...</div>;
+    }
     const addLike = async () => {
         const res = await fetch("/api/handle-like", {
             method: "POST",
@@ -52,7 +54,7 @@ export default function OneRecipe({ data, preview }) {
             <h1>{recipe.name}</h1>
             <button className="like-button" onClick={addLike}>{likes} ❤</button>
             <main className="content">
-                <Image src={urlFor(recipe?.mainImage).url()} alt={recipe.name} />
+                <img src={urlFor(recipe?.mainImage).url()} alt={recipe.name} />
                 <div className="breakdown">
                     <ul className="ingredients">
                         {recipe.ingredient?.map(ingredient => (
