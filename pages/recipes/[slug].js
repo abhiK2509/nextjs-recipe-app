@@ -1,7 +1,11 @@
 //dynamic route
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { sanityClient, urlFor, usePreviewSubscription, Portabletext } from '../../lib/sanity';
+import { useState } from "react";
+import {
+    sanityClient,
+    urlFor,
+    usePreviewSubscription,
+    Portabletext
+} from "../../lib/sanity";
 
 const recipeQuery = `*[_type == "recipe" && slug.current == $slug][0]{
     _id,
@@ -21,11 +25,6 @@ const recipeQuery = `*[_type == "recipe" && slug.current == $slug][0]{
 }`;
 
 export default function OneRecipe({ data, preview }) {
-    // const router = useRouter();
-    // if (router.isFallback) {
-    //     return <div>Loading...</div>
-    // }
-
     if (!data) return <div>Loading...</div>;
 
     const { data: recipe } = usePreviewSubscription(recipeQuery, {
