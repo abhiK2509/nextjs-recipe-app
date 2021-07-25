@@ -1,7 +1,6 @@
 //dynamic route
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import {
     sanityClient,
     urlFor,
@@ -54,7 +53,7 @@ export default function OneRecipe({ data, preview }) {
             <h1>{recipe.name}</h1>
             <button className="like-button" onClick={addLike}>{likes} ❤</button>
             <main className="content">
-                <img src={urlFor(recipe?.mainImage).url()} alt={recipe.name} />
+                {recipe?.mainImage && <img src={urlFor(recipe.mainImage).url()} alt={recipe.name} />}
                 <div className="breakdown">
                     <ul className="ingredients">
                         {recipe.ingredient?.map(ingredient => (
